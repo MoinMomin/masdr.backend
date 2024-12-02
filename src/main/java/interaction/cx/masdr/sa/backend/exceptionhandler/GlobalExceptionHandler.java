@@ -6,12 +6,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = TenantNotFound.class)
     public ResponseEntity<Map> tenantNotFoundException(){
-        return new ResponseEntity<>(HttpStatus.CONFLICT);
+       Map<String,String> map= new HashMap<>();
+       map.put("msg","tenant not found");
+        return new ResponseEntity<>(map,HttpStatus.CONFLICT);
     }
 }
