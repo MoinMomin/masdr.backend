@@ -29,7 +29,7 @@ public class DataSourceInitializer {
  private static final Logger logger = LoggerFactory.getLogger(DataSourceInitializer.class);
     @PostConstruct
     public void initializeSchemas() {
-        createSchemaForDataSource(primaryDataSource, "PrimaryDB","interaction.cx.masdr.sa.backend.mapper");
+       // createSchemaForDataSource(primaryDataSource, "PrimaryDB","interaction.cx.masdr.sa.backend.mapper");
         logger.info("DataSourceInitializer.initializeSchemas........");
      //   createSchemaForDataSource(secondaryDataSource, "SecondaryDB");
      //   createSchemaForDataSource(ternaryDataSource, "TernaryDB");

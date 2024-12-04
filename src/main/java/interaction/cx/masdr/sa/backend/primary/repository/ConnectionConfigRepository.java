@@ -1,6 +1,8 @@
-package interaction.cx.masdr.sa.backend.repository;
+package interaction.cx.masdr.sa.backend.primary.repository;
 
 import interaction.cx.masdr.sa.backend.mapper.ConnectionMapper;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
