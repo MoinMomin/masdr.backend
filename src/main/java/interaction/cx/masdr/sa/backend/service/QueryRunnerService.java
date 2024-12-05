@@ -1,4 +1,3 @@
-/*
 package interaction.cx.masdr.sa.backend.service;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,7 +25,7 @@ public class QueryRunnerService {
         return jdbcTemplate.queryForList(query);
     }
 }
-*/
+/*
 package interaction.cx.masdr.sa.backend.service;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -68,3 +67,4 @@ public class QueryRunnerService {
     }
 }
 
+*/
