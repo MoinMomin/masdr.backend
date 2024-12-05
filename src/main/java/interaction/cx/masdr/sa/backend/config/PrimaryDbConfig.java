@@ -31,7 +31,7 @@ public class PrimaryDbConfig {
                 .build();
     }
 
-    @Bean
+    @Bean(name = "primaryTransactionManager")
     @Primary
     public PlatformTransactionManager primaryTransactionManager(
             @Qualifier("primaryEntityManagerFactory") LocalContainerEntityManagerFactoryBean primaryEntityManagerFactory) {

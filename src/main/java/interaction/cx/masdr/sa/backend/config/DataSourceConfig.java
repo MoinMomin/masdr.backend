@@ -125,7 +125,7 @@ public class DataSourceConfig {
         return createDataSource(primaryDbUrl, primaryDbUsername, primaryDbPassword);
     }
 
-    @Bean
+    @Bean(name="tenantRoutingDataSource")
     public TenantRoutingDataSource tenantRoutingDataSource() {
         TenantRoutingDataSource dataSource = new TenantRoutingDataSource();
         logger.info("Configuring TenantRoutingDataSource...");
