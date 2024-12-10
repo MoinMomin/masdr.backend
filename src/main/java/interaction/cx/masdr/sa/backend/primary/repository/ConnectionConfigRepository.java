@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ConnectionConfigRepository extends JpaRepository<ConnectionMapper,Long> {
     public ConnectionMapper findById(long id);
+    public ConnectionMapper findBytenantId(String id);
 }

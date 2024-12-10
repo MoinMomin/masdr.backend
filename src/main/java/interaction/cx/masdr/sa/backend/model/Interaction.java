@@ -1,6 +1,6 @@
 package interaction.cx.masdr.sa.backend.model;
 
-import interaction.cx.masdr.sa.backend.InteractionType;
+import interaction.cx.masdr.sa.backend.enums.InteractionType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

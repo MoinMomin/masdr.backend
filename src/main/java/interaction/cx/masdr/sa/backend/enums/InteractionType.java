@@ -1,4 +1,4 @@
-package interaction.cx.masdr.sa.backend;
+package interaction.cx.masdr.sa.backend.enums;
 public enum InteractionType {
     CALL,
     CHAT,

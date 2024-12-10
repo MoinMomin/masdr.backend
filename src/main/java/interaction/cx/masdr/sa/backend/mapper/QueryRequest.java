@@ -10,4 +10,11 @@ public class QueryRequest {
     public void setQuery(String query) {
         this.query = query;
     }
+
+    @Override
+    public String toString() {
+        return "QueryRequest{" +
+                "query='" + query + '\'' +
+                '}';
+    }
 }
