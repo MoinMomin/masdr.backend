@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 @RestController
@@ -25,7 +28,7 @@ public class ProductController {
     @PostMapping("/createproduct")
     public ResponseEntity<Map> createProduct(@RequestBody Product product,@RequestHeader("Authorization") String authorizationHeader){
         String token = authorizationHeader.replace("Bearer ", "");
-        String tenantId = jwtUtil.getTenantIdFromToken(token);
+        String tenantId = jwtUtil.getClaimPropertiesFromToken(token, Arrays.asList("tenantId")).get("tenantId");
         tenantRoutingDataSource.validateTenantDataSource(tenantId);
         TenantContext.setCurrentTenant(tenantId);
         productService.createProduct(product);

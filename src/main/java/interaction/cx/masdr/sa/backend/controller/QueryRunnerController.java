@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -32,15 +33,16 @@ public class QueryRunnerController {
     public ResponseEntity<?> runQuery(@RequestBody QueryRequest queryRequest,@RequestHeader("Authorization") String authorizationHeader) {
         try {
             String token = authorizationHeader.replace("Bearer ", "");
-
-            String tenantId = jwtUtil.getTenantIdFromToken(token);
+            Map<String,String> claimPropertiesMap= jwtUtil.getClaimPropertiesFromToken(token, Arrays.asList("tenantId","userId"));
+            String tenantId = claimPropertiesMap.get("tenantId");
+            String userId = claimPropertiesMap.get("userId");
             TenantContext.setCurrentTenant(tenantId);
 
           //  log.info("Executing query for tenant: {} | Query: {}", tenant, queryRequest.getQuery());
 
             // Execute the query and handle results
             Object result = queryRunnerService.executeQuery(queryRequest.getQuery());
-            currentStateService.saveCurrentState(new CurrentState(tenantId,queryRequest.toString()));
+            currentStateService.saveCurrentState(new CurrentState(userId,queryRequest.toString()));
             TenantContext.clear();
             return ResponseEntity.ok(Map.of("tenant", tenantId, "result", result));
         } catch (Exception e) {
@@ -53,9 +55,9 @@ public class QueryRunnerController {
     public ResponseEntity<?> getCurrentState(@RequestHeader("Authorization") String authorizationHeader){
         String token = authorizationHeader.replace("Bearer ", "");
 
-        String tenantId = jwtUtil.getTenantIdFromToken(token);
-        TenantContext.setCurrentTenant(tenantId);
-      CurrentState currentState=  currentStateService.findByTenantId(tenantId);
+        Map<String,String> claimPropertiesMap= jwtUtil.getClaimPropertiesFromToken(token, Arrays.asList("tenantId","userId"));
+        TenantContext.setCurrentTenant(claimPropertiesMap.get("tenantId"));
+      CurrentState currentState=  currentStateService.findByUserId(claimPropertiesMap.get("userId"));
       TenantContext.clear();
         return ResponseEntity.ok(Map.of("data",currentState));
     }

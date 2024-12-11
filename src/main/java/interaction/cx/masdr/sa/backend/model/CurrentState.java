@@ -17,6 +17,6 @@ public class CurrentState {
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
    // private long currentStateId;
     @Id
-    private String tenantId;
+    private String userId;
     private String data;
 }

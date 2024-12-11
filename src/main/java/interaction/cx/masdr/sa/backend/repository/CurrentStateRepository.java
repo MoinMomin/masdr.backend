@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface CurrentStateRepository extends JpaRepository<CurrentState,String> {
-    public Optional<CurrentState> findById(String tenantId);
+    public Optional<CurrentState> findById(String userId);
 }
