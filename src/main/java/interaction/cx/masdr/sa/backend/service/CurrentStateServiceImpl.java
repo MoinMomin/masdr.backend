@@ -5,6 +5,7 @@ import interaction.cx.masdr.sa.backend.repository.CurrentStateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,11 +18,12 @@ public class CurrentStateServiceImpl implements CurrentStateService{
     }
 
     @Override
-    public CurrentState findByTenantId(String tenantId) {
-        Optional<CurrentState> currentStateOptional= currentStateRepository.findById(tenantId);
-        if(currentStateOptional.isEmpty()){
-            return null;
-        }
-        return currentStateOptional.get();
+    public Object getConfiguration(String graphId) {
+     if(graphId==null){
+         return currentStateRepository.findAll();
+     }else{
+
+         return currentStateRepository.findById(graphId);
+     }
     }
 }

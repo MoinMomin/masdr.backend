@@ -7,6 +7,7 @@ import interaction.cx.masdr.sa.backend.service.CurrentStateService;
 import interaction.cx.masdr.sa.backend.service.QueryRunnerService;
 import interaction.cx.masdr.sa.backend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,12 +57,12 @@ public class QueryRunnerController {
         }
     }
     @GetMapping("/getcurrentstate")
-    public ResponseEntity<?> getCurrentState(@RequestHeader("Authorization") String authorizationHeader){
+    public ResponseEntity<?> getCurrentState(@RequestHeader("Authorization") String authorizationHeader, @RequestParam(value = "graphId",required = false) String graphId){
         String token = authorizationHeader.replace("Bearer ", "");
 
         Map<String,String> claimPropertiesMap= jwtUtil.getClaimPropertiesFromToken(token, Arrays.asList("tenantId","userId"));
         TenantContext.setCurrentTenant(claimPropertiesMap.get("tenantId"));
-      CurrentState currentState=  currentStateService.findByTenantId(claimPropertiesMap.get("tenantId"));
+      Object currentState=  currentStateService.getConfiguration(graphId);
       TenantContext.clear();
         return ResponseEntity.ok(Map.of("data",currentState));
     }

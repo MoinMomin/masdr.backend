@@ -19,6 +19,6 @@ public class CurrentState {
    /* @Id
     private String userId;*/
     @Id
-    private String tenantId;
+    private String graphId;
     private String data;
 }
