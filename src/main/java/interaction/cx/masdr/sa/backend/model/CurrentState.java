@@ -13,10 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CurrentState {
-    //@Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
-   // private long currentStateId;
+    /*@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long currentStateId;*/
+   /* @Id
+    private String userId;*/
     @Id
-    private String userId;
+    private String tenantId;
     private String data;
 }

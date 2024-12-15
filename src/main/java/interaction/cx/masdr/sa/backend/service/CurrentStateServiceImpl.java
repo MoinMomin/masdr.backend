@@ -17,8 +17,8 @@ public class CurrentStateServiceImpl implements CurrentStateService{
     }
 
     @Override
-    public CurrentState findByUserId(String userId) {
-        Optional<CurrentState> currentStateOptional= currentStateRepository.findById(userId);
+    public CurrentState findByTenantId(String tenantId) {
+        Optional<CurrentState> currentStateOptional= currentStateRepository.findById(tenantId);
         if(currentStateOptional.isEmpty()){
             return null;
         }
