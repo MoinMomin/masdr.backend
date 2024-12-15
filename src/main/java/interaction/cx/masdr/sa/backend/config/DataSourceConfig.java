@@ -1,3 +1,4 @@
+/*
 package interaction.cx.masdr.sa.backend.config;
 
 import com.zaxxer.hikari.HikariDataSource;
@@ -25,6 +26,7 @@ public class DataSourceConfig {
 
     @Value("${spring.datasource.primary.password}")
     private String primaryDbPassword;
+*/
 /*
 
     @Value("${spring.datasource.secondary.url}")
@@ -43,22 +45,26 @@ public class DataSourceConfig {
 
     @Value("${spring.datasource.ternary.password}")
     private String ternaryDbPassword;
-*/
+*//*
+
 public final Map<Object, Object> dataSources = new ConcurrentHashMap<>();
 private static final Logger logger = LoggerFactory.getLogger(DataSourceConfig.class);
     @Bean
     public DataSource primaryDataSource() {
+        logger.info("DataSourceConfig.primaryDataSource ........");
         return createDataSource(primaryDbUrl, primaryDbUsername, primaryDbPassword);
     }
 
-  /*  @Bean
+  */
+/*  @Bean
     public DataSource secondaryDataSource() {
         return createDataSource(secondaryDbUrl, secondaryDbUsername, secondaryDbPassword);
     }
     @Bean
     public DataSource ternaryDataSource() {
         return createDataSource(ternaryDbUrl, ternaryDbUsername, ternaryDbPassword);
-    }*/
+    }*//*
+
 
     @Bean
     public TenantRoutingDataSource tenantRoutingDataSource() {
@@ -83,4 +89,59 @@ private static final Logger logger = LoggerFactory.getLogger(DataSourceConfig.cl
         return dataSource;
     }
 
+}
+*/
+package interaction.cx.masdr.sa.backend.config;
+
+import com.zaxxer.hikari.HikariDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import javax.sql.DataSource;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+@Configuration
+public class DataSourceConfig {
+
+    @Value("${spring.datasource.primary.url}")
+    private String primaryDbUrl;
+
+    @Value("${spring.datasource.primary.username}")
+    private String primaryDbUsername;
+
+    @Value("${spring.datasource.primary.password}")
+    private String primaryDbPassword;
+
+    public final Map<Object, Object> dataSources = new ConcurrentHashMap<>();
+    private static final Logger logger = LoggerFactory.getLogger(DataSourceConfig.class);
+
+    @Bean
+    public DataSource primaryDataSource() {
+        logger.info("Configuring primary DataSource...");
+        return createDataSource(primaryDbUrl, primaryDbUsername, primaryDbPassword);
+    }
+
+    @Bean(name="tenantRoutingDataSource")
+    public TenantRoutingDataSource tenantRoutingDataSource() {
+        TenantRoutingDataSource dataSource = new TenantRoutingDataSource();
+        logger.info("Configuring TenantRoutingDataSource...");
+        dataSources.put("primary", primaryDataSource());
+        dataSource.setTargetDataSources(dataSources);
+        dataSource.setDefaultTargetDataSource(primaryDataSource());
+        return dataSource;
+    }
+
+    public DataSource createDataSource(String url, String username, String password) {
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setJdbcUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        logger.info("Creating DataSource...");
+        return dataSource;
+    }
 }

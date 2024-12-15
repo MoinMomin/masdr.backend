@@ -4,12 +4,16 @@ import interaction.cx.masdr.sa.backend.config.TenantContext;
 import interaction.cx.masdr.sa.backend.config.TenantRoutingDataSource;
 import interaction.cx.masdr.sa.backend.model.Product;
 import interaction.cx.masdr.sa.backend.service.ProductService;
+import interaction.cx.masdr.sa.backend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 @RestController
@@ -19,8 +23,12 @@ public class ProductController {
     ProductService productService;
     @Autowired
     TenantRoutingDataSource tenantRoutingDataSource;
+    @Autowired
+    JwtUtil jwtUtil;
     @PostMapping("/createproduct")
-    public ResponseEntity<Map> createProduct(@RequestBody Product product,@RequestParam("tenantId") String tenantId){
+    public ResponseEntity<Map> createProduct(@RequestBody Product product,@RequestHeader("Authorization") String authorizationHeader){
+        String token = authorizationHeader.replace("Bearer ", "");
+        String tenantId = jwtUtil.getClaimPropertiesFromToken(token, Arrays.asList("tenantId")).get("tenantId");
         tenantRoutingDataSource.validateTenantDataSource(tenantId);
         TenantContext.setCurrentTenant(tenantId);
         productService.createProduct(product);

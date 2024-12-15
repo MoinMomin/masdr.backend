@@ -11,6 +11,8 @@ public class Product {
     private long productId;
 
     private String name;
+    private double rate;
+    private String unit;
 
 }
 

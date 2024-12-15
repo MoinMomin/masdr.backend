@@ -1,5 +1,4 @@
-/*
-package interaction.cx.masdr.sa.backend.mapper;
+package interaction.cx.masdr.sa.backend.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,15 +6,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
-@Data
 @Entity
-public class ConnectionConfig {
+@Data
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String tenantId;
-    private String url;
-    private String userName;
-    private String password;
+    private long customerId;
+
+    private String name;
 }
-*/
