@@ -26,7 +26,7 @@ public class PrimaryDbConfig {
             EntityManagerFactoryBuilder builder, @Qualifier("primaryDataSource") DataSource dataSource) {
         return builder
                 .dataSource(dataSource)
-                .packages("interaction.cx.masdr.sa.backend.mapper") // Adjust to your mapper/entity package
+                .packages("interaction.cx.masdr.sa.backend.primary.model") // Adjust to your mapper/entity package
                 .persistenceUnit("primaryPU")
                 .build();
     }

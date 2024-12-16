@@ -148,7 +148,7 @@ public class JpaConfig {
         logger.info("Setting JPA properties...");
         return Map.of(
                 "hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect",
-                "hibernate.hbm2ddl.auto", "none",
+                "hibernate.hbm2ddl.auto", "update",
                 "hibernate.show_sql", "true"
         );
     }
