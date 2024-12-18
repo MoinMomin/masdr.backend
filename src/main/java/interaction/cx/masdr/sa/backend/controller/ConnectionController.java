@@ -26,7 +26,7 @@ public class ConnectionController {
         return new ResponseEntity<>(HttpStatusCode.valueOf(201));
     }
     @PostMapping("/login")
-    public String login(@RequestParam String tenantId,@RequestParam String username){
+    public String login(@RequestParam(required = false) String tenantId,@RequestParam String username){
         String token = jwtUtil.generateToken(tenantId, username);;
         return token;
     }

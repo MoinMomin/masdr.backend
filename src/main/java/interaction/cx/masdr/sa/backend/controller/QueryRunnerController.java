@@ -31,18 +31,22 @@ public class QueryRunnerController {
 
     @PostMapping("/query-runner/run")
     @CrossOrigin
-    public ResponseEntity<?> runQuery(@RequestBody QueryRequest queryRequest,@RequestHeader("Authorization") String authorizationHeader) {
+    public ResponseEntity<?> runQuery(@RequestBody QueryRequest queryRequest,@RequestHeader("Authorization") String authorizationHeader,@RequestParam(required = false) String paramTenantId) {
         try {
             String token = authorizationHeader.replace("Bearer ", "");
             Map<String,String> claimPropertiesMap= jwtUtil.getClaimPropertiesFromToken(token, Arrays.asList("tenantId","userId"));
             if(claimPropertiesMap.get("tenantId")==null){
+                if(paramTenantId==null){
                 return ResponseEntity.status(HttpStatus.CONFLICT)
-                        .body(Map.of("error", "Tenant Id not available in Token"));
+                        .body(Map.of("error", "Tenant Id not available in Token and parameter"));
+            }
             }
             String tenantId = claimPropertiesMap.get("tenantId");
             String userId = claimPropertiesMap.get("userId");
+           if(tenantId==null){
+               tenantId=paramTenantId;
+           }
             TenantContext.setCurrentTenant(tenantId);
-
           //  log.info("Executing query for tenant: {} | Query: {}", tenant, queryRequest.getQuery());
 
             // Execute the query and handle results
@@ -57,11 +61,19 @@ public class QueryRunnerController {
         }
     }
     @GetMapping("/getcurrentstate")
-    public ResponseEntity<?> getCurrentState(@RequestHeader("Authorization") String authorizationHeader, @RequestParam(value = "graphId",required = false) String graphId){
+    public ResponseEntity<?> getCurrentState(@RequestHeader("Authorization") String authorizationHeader, @RequestParam(value = "graphId",required = false) String graphId,@RequestParam(required = false) String paramTenantId){
         String token = authorizationHeader.replace("Bearer ", "");
 
         Map<String,String> claimPropertiesMap= jwtUtil.getClaimPropertiesFromToken(token, Arrays.asList("tenantId","userId"));
-        TenantContext.setCurrentTenant(claimPropertiesMap.get("tenantId"));
+        if(claimPropertiesMap.get("tenantId")!=null){
+        TenantContext.setCurrentTenant(claimPropertiesMap.get("tenantId"));}
+        else{if(paramTenantId!=null){
+            TenantContext.setCurrentTenant(paramTenantId);}
+            else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "tenantId required"));
+        }
+        }
       Object currentState=  currentStateService.getConfiguration(graphId);
       TenantContext.clear();
         return ResponseEntity.ok(Map.of("data",currentState));
